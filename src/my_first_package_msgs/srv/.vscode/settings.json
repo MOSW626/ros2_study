@@ -1,0 +1,9 @@
+{
+    "ros.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/home/mosw/ros2_study/install/my_first_package_msgs/local/lib/python3.10/dist-packages",
+        "/home/mosw/ros2_study/install/my_first_package/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
