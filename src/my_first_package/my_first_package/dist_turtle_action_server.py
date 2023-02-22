@@ -28,6 +28,8 @@ class DistTurtleServer(Node):
         self.previous_pose = Pose()
         self.publisher = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
         self._action_server = ActionServer(self, DistTurtle, 'dist_turtle', self.execute_callback)
+        self.declare_parameter('quatile_time', 0.75)
+        self.declare_parameter('almost_goal_time', 0.95)
 
     def calc_diff_pose(self):
         if self.is_first_time:
