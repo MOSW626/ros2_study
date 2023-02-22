@@ -30,6 +30,8 @@ class DistTurtleServer(Node):
         self._action_server = ActionServer(self, DistTurtle, 'dist_turtle', self.execute_callback)
         self.declare_parameter('quatile_time', 0.75)
         self.declare_parameter('almost_goal_time', 0.95)
+        (quantile_time, almosts_time) = self.get_parameters(['quatile_time', 'almost_goal_time'])
+        print('quatile_time and almost_goal time is ', quantile_time.value, almosts_time.value)
 
     def calc_diff_pose(self):
         if self.is_first_time:
