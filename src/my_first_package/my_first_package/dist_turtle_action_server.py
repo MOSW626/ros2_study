@@ -29,14 +29,15 @@ class DistTurtleServer(Node):
         self.current_pose = Pose()
         self.previous_pose = Pose()
         self.publisher = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
-        self._action_server = ActionServer(self, DistTurtle, 'dist_turtle', self.execute_callback)
+        self.action_server = ActionServer(self, DistTurtle, 'dist_turtle', self.excute_callback)
 
         self.get_logger().info('Dist turtle action server is started.')
 
         self.declare_parameter('quatile_time', 0.75)
         self.declare_parameter('almost_goal_time', 0.95)
 
-        (quantile_time, almosts_time) = self.get_parameters(['quatile_time', 'almost_goal_time'])
+        (quantile_time, almosts_time) = self.get_parameters(
+                                            ['quatile_time', 'almost_goal_time'])
         self.quantile_time = quantile_time.value
         self.almosts_time = almosts_time.value
 
@@ -67,13 +68,14 @@ class DistTurtleServer(Node):
             self.previous_pose.y = self.current_pose.y
             self.is_first_time = False
 
-        diff_dist = math.sqrt((self.current_pose.x - self.previous_pose.x)**2 + (self.previous_pose.y - self.current_pose.y)**2)
+        diff_dist = math.sqrt((self.current_pose.x - self.previous_pose.x)**2 +\
+                             (self.current_pose.y - self.previous_pose.y)**2)
 
         self.previous_pose = self.current_pose
 
         return diff_dist
 
-    def execute_callback(self, goal_handle):
+    def excute_callback(self, goal_handle):
         feedback_msg = DistTurtle.Feedback()
 
         msg = Twist()
@@ -86,11 +88,11 @@ class DistTurtleServer(Node):
             goal_handle.publish_feedback(feedback_msg)
             self.publisher.publish(msg)
 
-            tmp = feedback_msg.remained_dist = goal_handle.request.dist * self.quantile_time
+            tmp = feedback_msg.remained_dist - goal_handle.request.dist * self.quantile_time
             tmp = abs(tmp)
 
             if tmp < 0.02:
-                output_msg = 'The turtle passese the ' + str(self.quantile_time) + ' point. '
+                output_msg = 'The turtle passes the ' + str(self.quantile_time) + ' point. '
                 output_msg = output_msg + ' : ' + str(tmp)
                 self.get_logger().info(output_msg)
 
